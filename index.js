@@ -16,7 +16,15 @@ var findScritps = (node) => {
 var run = function() {
   const scripts = ((this.state || {}).scripts || []);
 
-  var fns = scripts.map((src) => {
+  var fns = scripts.filter((src) => {
+    try {
+      new Function('require', src);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }).map((src) => {
     return new Function('require', src);
   }).forEach((fn) => {
     return fn();
