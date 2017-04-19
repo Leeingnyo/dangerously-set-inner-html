@@ -27,7 +27,11 @@ var run = function() {
   }).map((src) => {
     return new Function('require', src);
   }).forEach((fn) => {
-    return fn();
+    try {
+      return fn();
+    } catch (err) {
+      console.error(err);
+    }
   });
 };
 
