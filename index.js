@@ -5,9 +5,9 @@ var uuid = require('uuid').v4;
 
 const isBrowser = !!(document && window);
 
-var findScritps = (node) => {
+var findScritps = function (node) {
   if (node.tagName && node.tagName === 'script') {
-    return (node.childNodes || []).map((n) => n.value);
+    return (node.childNodes || []).map(function (n) { return n.value; });
   }
 
   return flatten((node.childNodes || []).map(findScritps));
@@ -16,7 +16,7 @@ var findScritps = (node) => {
 var run = function() {
   const scripts = ((this.state || {}).scripts || []);
 
-  var fns = scripts.filter((src) => {
+  var fns = scripts.filter(function (src) {
     try {
       new Function('require', src);
       return true;
@@ -24,9 +24,9 @@ var run = function() {
       console.error(err);
       return false;
     }
-  }).map((src) => {
+  }).map(function (src) {
     return new Function('require', src);
-  }).forEach((fn) => {
+  }).forEach(function (fn) {
     try {
       return fn();
     } catch (err) {
